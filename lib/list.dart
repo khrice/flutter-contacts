@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 import './contactDetails.dart';
+import 'contact.dart';
 
 class ListDemo extends StatefulWidget {
   const ListDemo({Key key}) : super(key: key);
@@ -50,7 +51,7 @@ class _ListDemoState extends State<ListDemo> {
                       onTap: () {
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                new ContactDetails(c)));
+                                new ContactsDemo()));
                       },
                       leading: (c.avatar != null && c.avatar.length > 0)
                           ? new CircleAvatar(

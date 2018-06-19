@@ -33,16 +33,16 @@ class ContactDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-          title: new Text(_contact.displayName ?? ""),
-          actions: <Widget>[
-            new FlatButton(
-                child: _contact.givenName != null
-                    ? new Icon(Icons.delete)
-                    : null,
-                onPressed: () {
-                  ContactsService.deleteContact(_contact);
-                })
-          ]),
+        title: new Text(_contact.displayName ?? ""),
+        actions: <Widget>[
+          new FlatButton(
+            child: _contact.givenName != null
+                ? new Icon(Icons.delete)
+                : null,
+            onPressed: () {
+              ContactsService.deleteContact(_contact);
+            })
+        ]),
       body: new Scrollbar(
         child: new ContactDetailsForm(formKey: _formKey, data: _data)
       ),
@@ -66,53 +66,51 @@ class ContactDetailsForm extends StatelessWidget {
       child: new Form(
         key: formKey,
         autovalidate: false,
-        child: new SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[
-              new TextFormField(
-                  keyboardType:
-                      TextInputType.text, // Use email input type for emails.
-                  decoration: new InputDecoration(
-                      hintText: 'John', labelText: 'First Name'),
-                  onSaved: (String value) {
-                    this.data.firstName = value;
-                  }),
-              new TextFormField(
-                  keyboardType:
-                      TextInputType.text, // Use email input type for emails.
-                  decoration: new InputDecoration(
-                      hintText: 'Doe', labelText: 'Last Name'),
-                  onSaved: (String value) {
-                    this.data.lastName = value;
-                  }),
-              new TextFormField(
-                  keyboardType: TextInputType
-                      .emailAddress, // Use email input type for emails.
-                  decoration: new InputDecoration(
-                      hintText: 'you@example.com', labelText: 'E-mail Address'),
-                  onSaved: (String value) {
-                    this.data.email = value;
-                  }),
-              new TextFormField(
-                  keyboardType:
-                      TextInputType.phone, // Use email input type for emails.
-                  decoration: new InputDecoration(
-                      hintText: '111-222-3333', labelText: 'Phone Number'),
-                  onSaved: (String value) {
-                    this.data.phoneNumber = value;
-                  }),
-              new Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: new RaisedButton(
-                  onPressed: () {
-                    formKey.currentState.save();
-                    createContact(data);
-                  },
-                  child: new Text('Submit'),
-                ),
+        child: new Column(
+          children: <Widget>[
+            new TextFormField(
+                keyboardType:
+                    TextInputType.text, // Use email input type for emails.
+                decoration: new InputDecoration(
+                    hintText: 'John', labelText: 'First Name'),
+                onSaved: (String value) {
+                  this.data.firstName = value;
+                }),
+            new TextFormField(
+                keyboardType:
+                    TextInputType.text, // Use email input type for emails.
+                decoration: new InputDecoration(
+                    hintText: 'Doe', labelText: 'Last Name'),
+                onSaved: (String value) {
+                  this.data.lastName = value;
+                }),
+            new TextFormField(
+                keyboardType: TextInputType
+                    .emailAddress, // Use email input type for emails.
+                decoration: new InputDecoration(
+                    hintText: 'you@example.com', labelText: 'E-mail Address'),
+                onSaved: (String value) {
+                  this.data.email = value;
+                }),
+            new TextFormField(
+                keyboardType:
+                    TextInputType.phone, // Use email input type for emails.
+                decoration: new InputDecoration(
+                    hintText: '111-222-3333', labelText: 'Phone Number'),
+                onSaved: (String value) {
+                  this.data.phoneNumber = value;
+                }),
+            new Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: new RaisedButton(
+                onPressed: () {
+                  formKey.currentState.save();
+                  createContact(data);
+                },
+                child: new Text('Submit'),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

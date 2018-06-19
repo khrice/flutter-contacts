@@ -1,7 +1,7 @@
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class ViewContact extends StatelessWidget {
@@ -12,6 +12,38 @@ class ViewContact extends StatelessWidget {
     );
   }
 }
+
+  _callMe() async {
+    // Android
+    const uri = 'tel:+1 222 060 888';
+    if (await canLaunch(uri)) {
+      await launch(uri);
+    } else {
+      // iOS
+      const uri = 'tel:001-22-060-888';
+      if (await canLaunch(uri)) {
+        await launch(uri);
+      } else {
+        throw 'Could not launch $uri';
+      }
+    }
+  }
+
+  _textMe() async {
+    // Android
+    const uri = 'sms:+39 349 060 888';
+    if (await canLaunch(uri)) {
+      await launch(uri);
+    } else {
+      // iOS
+      const uri = 'sms:0039-222-060-888';
+      if (await canLaunch(uri)) {
+        await launch(uri);
+      } else {
+        throw 'Could not launch $uri';
+      }
+    }
+  }
 
 class _ContactCategory extends StatelessWidget {
   const _ContactCategory({ Key key, this.icon, this.children }) : super(key: key);
@@ -38,7 +70,9 @@ class _ContactCategory extends StatelessWidget {
               new Container(
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
                 width: 72.0,
-                child: new Icon(icon, color: themeData.primaryColor)
+                child: icon == Icons.call ? new IconButton(icon: new Icon(icon),
+                  color: themeData.primaryColor,
+                  onPressed: _callMe()) : Icon(icon, color: themeData.primaryColor)
               ),
               new Expanded(child: new Column(children: children))
             ],
@@ -169,8 +203,7 @@ class ContactsDemoState extends State<ContactsDemo> {
                   fit: StackFit.expand,
                   children: <Widget>[
                     new Image.asset(
-                      'ali_connors.jpg',
-                      package: 'flutter_gallery_assets',
+                      'assets/ali_connors.jpg',
                       fit: BoxFit.cover,
                       height: _appBarHeight,
                     ),
@@ -198,9 +231,7 @@ class ContactsDemoState extends State<ContactsDemo> {
                       icon: Icons.message,
                       tooltip: 'Send message',
                       onPressed: () {
-                        _scaffoldKey.currentState.showSnackBar(const SnackBar(
-                          content: const Text('Pretend that this opened your SMS application.')
-                        ));
+                        _textMe();
                       },
                       lines: const <String>[
                         '(650) 555-1234',
@@ -211,9 +242,7 @@ class ContactsDemoState extends State<ContactsDemo> {
                       icon: Icons.message,
                       tooltip: 'Send message',
                       onPressed: () {
-                        _scaffoldKey.currentState.showSnackBar(const SnackBar(
-                          content: const Text('A messaging app appears.')
-                        ));
+                        _textMe();
                       },
                       lines: const <String>[
                         '(323) 555-6789',
@@ -224,9 +253,7 @@ class ContactsDemoState extends State<ContactsDemo> {
                       icon: Icons.message,
                       tooltip: 'Send message',
                       onPressed: () {
-                        _scaffoldKey.currentState.showSnackBar(const SnackBar(
-                          content: const Text('Imagine if you will, a messaging application.')
-                        ));
+                        _textMe();
                       },
                       lines: const <String>[
                         '(650) 555-6789',
