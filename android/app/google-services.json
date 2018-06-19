@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "182365351154",
+    "firebase_url": "https://beautifulfeet-8da42.firebaseio.com",
+    "project_id": "beautifulfeet-8da42",
+    "storage_bucket": "beautifulfeet-8da42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182365351154:android:239b6b51ea8633ea",
+        "android_client_info": {
+          "package_name": "com.example.beautifulfeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182365351154-0tel00eocsjpulj6q22ae5bj5m7i62gb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.beautifulfeet",
+            "certificate_hash": "8e65772f541cdbe211e9d8492ad0ef4f1d5084b4"
+          }
+        },
+        {
+          "client_id": "182365351154-o9fkupn6ssh059o8pv6t8oeun9ilasdh.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "182365351154-o9fkupn6ssh059o8pv6t8oeun9ilasdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_AjYmT9kqsXybxr-qG1UUlIrwnUfakEQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182365351154-o9fkupn6ssh059o8pv6t8oeun9ilasdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

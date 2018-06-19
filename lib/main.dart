@@ -1,7 +1,16 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import './contactDetails.dart';
 import './list.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+GoogleSignIn _googleSignIn = new GoogleSignIn(
+  scopes: <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ],
+);
 
 void main() => runApp(new MyApp());
 
@@ -10,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Beautiful Feet',
       theme: new ThemeData(
         // This is the theme of your application.
         //
@@ -45,6 +54,29 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 class _MyHomePageState extends State<MyHomePage> {
+  GoogleSignInAccount _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+      setState(() {
+        _currentUser = account;
+      });
+      if (_currentUser != null) {
+
+      }
+    });
+    _googleSignIn.signInSilently();
+  }
+
+  Future<Null> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
 
   void _openContact() {
     Navigator.push(
@@ -62,7 +94,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
-      body: new ListDemo(),
+      body: _currentUser != null ? new ListDemo() : new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          const Text("You are not currently signed in."),
+          new RaisedButton(
+            child: const Text('SIGN IN'),
+            onPressed: _handleSignIn,
+          ),
+        ],
+      ),
       floatingActionButton: new FloatingActionButton(
         onPressed: _openContact,
         tooltip: 'CreatContact',

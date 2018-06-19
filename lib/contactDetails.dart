@@ -1,90 +1,120 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 
+class _ContactData {
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String phoneNumber = '';
+}
+
+createContact(data) {
+  Item phone =
+      new Item(label: "Phone Number", value: data.phoneNumber.toString());
+  Item email = new Item(label: "Email", value: data.email.toString());
+
+  Contact contact = new Contact(
+      givenName: data.firstName,
+      familyName: data.lastName,
+      phones: [phone],
+      emails: [email]);
+  ContactsService.addContact(contact).catchError((err) {
+    print(err);
+  });
+}
+
 class ContactDetails extends StatelessWidget {
   ContactDetails(this._contact);
   final Contact _contact;
-  final firstNameCtrl = new TextEditingController();
-  final lastNameCtrl = new TextEditingController();
-  final phoneCtrl = new TextEditingController();
-  final emailCtrl = new TextEditingController();
-
-  createContact() {
-    String firstName = firstNameCtrl.value.toString();
-    String lastName = lastNameCtrl.value.toString();
-    Item phone =
-        new Item(label: "Phone Number", value: phoneCtrl.value.toString());
-    Item email = new Item(label: "Email", value: emailCtrl.value.toString());
-    Contact contact = new Contact(
-        givenName: firstName,
-        familyName: lastName,
-        phones: [phone],
-        emails: [email]);
-    print(contact);
-    ContactsService.addContact(contact);
-  }
+  _ContactData _data = new _ContactData();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-            title: new Text(_contact.displayName ?? ""),
-            actions: <Widget>[
-              new FlatButton(
-                  child: _contact.givenName != null
-                      ? new Icon(Icons.delete)
-                      : new Icon(Icons.save),
+      appBar: new AppBar(
+          title: new Text(_contact.displayName ?? ""),
+          actions: <Widget>[
+            new FlatButton(
+                child: _contact.givenName != null
+                    ? new Icon(Icons.delete)
+                    : null,
+                onPressed: () {
+                  ContactsService.deleteContact(_contact);
+                })
+          ]),
+      body: new Scrollbar(
+        child: new ContactDetailsForm(formKey: _formKey, data: _data)
+      ),
+    );
+  }
+}
+
+class ContactDetailsForm extends StatelessWidget {
+  const ContactDetailsForm({
+    Key key,
+    @required this.formKey,
+    @required this.data,
+  }) : super(key: key);
+
+  final GlobalKey<FormState> formKey;
+  final _ContactData data;
+
+  @override
+  Widget build(BuildContext context) {
+    return new SingleChildScrollView(
+      child: new Form(
+        key: formKey,
+        autovalidate: false,
+        child: new SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[
+              new TextFormField(
+                  keyboardType:
+                      TextInputType.text, // Use email input type for emails.
+                  decoration: new InputDecoration(
+                      hintText: 'John', labelText: 'First Name'),
+                  onSaved: (String value) {
+                    this.data.firstName = value;
+                  }),
+              new TextFormField(
+                  keyboardType:
+                      TextInputType.text, // Use email input type for emails.
+                  decoration: new InputDecoration(
+                      hintText: 'Doe', labelText: 'Last Name'),
+                  onSaved: (String value) {
+                    this.data.lastName = value;
+                  }),
+              new TextFormField(
+                  keyboardType: TextInputType
+                      .emailAddress, // Use email input type for emails.
+                  decoration: new InputDecoration(
+                      hintText: 'you@example.com', labelText: 'E-mail Address'),
+                  onSaved: (String value) {
+                    this.data.email = value;
+                  }),
+              new TextFormField(
+                  keyboardType:
+                      TextInputType.phone, // Use email input type for emails.
+                  decoration: new InputDecoration(
+                      hintText: '111-222-3333', labelText: 'Phone Number'),
+                  onSaved: (String value) {
+                    this.data.phoneNumber = value;
+                  }),
+              new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: new RaisedButton(
                   onPressed: () {
-                    _contact.givenName != null
-                        ? ContactsService.deleteContact(_contact)
-                        : createContact();
-                  })
-            ]),
-        body: new SafeArea(
-          child: _contact.givenName != null
-              ? new ListView(children: <Widget>[
-                  new ListTile(
-                      title: new Text("First Name"),
-                      trailing: new Text(_contact.givenName ?? "")),
-                  new ListTile(
-                      title: new Text("Last name"),
-                      trailing: new Text(_contact.familyName ?? "")),
-                  new ListTile(
-                      title: new Text("Phone Number"),
-                      trailing: new Text(_contact.phones.toList()[0] ?? "")),
-                  new ListTile(
-                      title: new Text("Email"),
-                      trailing: new Text(_contact.emails.toList()[0] ?? "")),
-                ])
-              : new Form(
-                  key: new GlobalKey<FormState>(),
-                  autovalidate: false,
-                  child: new SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        new TextFormField(
-                            controller: firstNameCtrl,
-                            decoration:
-                                const InputDecoration(labelText: "First Name")),
-                        new TextFormField(
-                            controller: lastNameCtrl,
-                            decoration:
-                                const InputDecoration(labelText: "Last Name")),
-                        new TextFormField(
-                            controller: phoneCtrl,
-                            keyboardType: TextInputType.phone,
-                            decoration:
-                                const InputDecoration(labelText: "Phone Number")),
-                        new TextFormField(
-                            controller: emailCtrl,
-                            decoration:
-                                const InputDecoration(labelText: "Email")),
-                      ],
-                    ),
-                  ),
+                    formKey.currentState.save();
+                    createContact(data);
+                  },
+                  child: new Text('Submit'),
                 ),
-        ));
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

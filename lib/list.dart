@@ -3,28 +3,11 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import './contact.dart';
 import 'package:contacts_service/contacts_service.dart';
 import './contactDetails.dart';
 
-enum _MaterialListType {
-  /// A list tile that contains a single line of text.
-  oneLine,
-
-  /// A list tile that contains a [CircleAvatar] followed by a single line of text.
-  oneLineWithAvatar,
-
-  /// A list tile that contains two lines of text.
-  twoLine,
-
-  /// A list tile that contains three lines of text.
-  threeLine,
-}
-
 class ListDemo extends StatefulWidget {
   const ListDemo({Key key}) : super(key: key);
-
-  static const String routeName = '/material/list';
 
   @override
   _ListDemoState createState() => new _ListDemoState();
@@ -34,7 +17,6 @@ class _ListDemoState extends State<ListDemo> {
   static final GlobalKey<ScaffoldState> scaffoldKey =
       new GlobalKey<ScaffoldState>();
 
-  PersistentBottomSheetController<Null> _bottomSheet;
   Iterable<Contact> _contacts;
 
   @override
